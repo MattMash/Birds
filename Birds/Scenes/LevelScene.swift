@@ -25,7 +25,7 @@ class LevelScene: SKScene {
             for column in 0..<3 {
                 let levelBoxButton = SpriteKitButton(defaultButtonImage: "woodButton", action: gotoGameScene, index: level)
                 levelBoxButton.position = CGPoint(x: columnStartingPoint + columnStartingPoint * CGFloat(column), y: rowStartingPoint - CGFloat(row) * frame.midY/2)
-                levelBoxButton.zPosition = ZPositions.hudBackground
+                levelBoxButton.zPosition = ZPosition.hudBackground
                 addChild(levelBoxButton)
                 
                 let levelLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
@@ -33,7 +33,7 @@ class LevelScene: SKScene {
                 levelLabel.verticalAlignmentMode = .center
                 levelLabel.text = "\(level)"
                 levelLabel.aspectScale(to: levelBoxButton.size, width: false, multiplier: 0.5)
-                levelLabel.zPosition = ZPositions.hudLabal
+                levelLabel.zPosition = ZPosition.hudLabal
                 levelBoxButton.addChild(levelLabel)
                 
                 levelBoxButton.aspectScale(to: frame.size, width: false, multiplier: 0.2)

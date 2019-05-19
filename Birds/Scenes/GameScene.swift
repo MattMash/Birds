@@ -25,17 +25,24 @@ class GameScene: SKScene {
     var maxScale: CGFloat = 0
     
     var bird = Bird(type: .red)
-    var birds = [
-        Bird(type: .red),
-        Bird(type: .blue),
-        Bird(type: .yellow),
-    ]
+    var birds = [Bird]()
     let anchor = SKNode()
+    
+    var level: Int?
     
     var roundState = RoundState.ready
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
+        
+        guard let level = level else { return }
+        guard let levelData = LevelData(level: level) else { return }
+        
+        for birdColour in levelData.birds {
+            if let newBirdType = BirdType(rawValue: birdColour) {
+                birds.append(Bird(type: newBirdType))
+            }
+        }
         
         setupLevel()
         setupGestureRecognizers()
@@ -109,7 +116,7 @@ class GameScene: SKScene {
                 block.zRotation = child.zRotation
                 block.size = child.size
                 block.position = child.position
-                block.zPosition = ZPositions.obstacles
+                block.zPosition = ZPosition.obstacles
                 block.createPhysicsBody()
                 mapNode.addChild(block)
                 child.removeFromParent()
@@ -195,6 +202,11 @@ extension GameScene: SKPhysicsContactDelegate{
                 block.impact(force: Int(contact.collisionImpulse))
             } else if let block = contact.bodyA.node as? Block {
                 block.impact(force: Int(contact.collisionImpulse))
+            }
+            if let bird = contact.bodyA.node as? Bird {
+                bird.flying = false
+            } else if let bird = contact.bodyB.node as? Bird {
+                bird.flying = false
             }
         case PhycicsCategory.block | PhycicsCategory.block:
             if let block = contact.bodyA.node as? Block {

@@ -16,6 +16,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if let url = Bundle.main.url(forResource: "Levels", withExtension: "plist") {
+            do {
+                let data =  try Data(contentsOf: url)
+                guard let levelsDictionary = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String:Any]
+                    else {
+                        print("Could not initialize levels dictionary")
+                        return false
+                    }
+                Levels.levelsDictionary = levelsDictionary
+                
+            } catch {
+                print(error)
+            }
+        } else {
+            print("Could not find Level.plist dictionary")
+        }
+        
         return true
     }
 
