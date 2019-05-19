@@ -10,9 +10,9 @@
 		153BEAB6228B6267007D5E63 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153BEAB5228B6267007D5E63 /* MenuScene.swift */; };
 		153BEAB8228B6282007D5E63 /* LevelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153BEAB7228B6282007D5E63 /* LevelScene.swift */; };
 		153BEABA228B6C60007D5E63 /* SpriteKitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153BEAB9228B6C60007D5E63 /* SpriteKitButton.swift */; };
+		1546F86222917789007CFA51 /* GameScene_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1546F86122917789007CFA51 /* GameScene_1.sks */; };
 		155F66B322914A3C0072E431 /* GameScene_2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 155F66B222914A3C0072E431 /* GameScene_2.sks */; };
 		15663DD9227B4BBF0028EFAC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15663DD8227B4BBF0028EFAC /* AppDelegate.swift */; };
-		15663DDB227B4BBF0028EFAC /* GameScene_1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 15663DDA227B4BBF0028EFAC /* GameScene_1.sks */; };
 		15663DDF227B4BBF0028EFAC /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15663DDE227B4BBF0028EFAC /* GameScene.swift */; };
 		15663DE1227B4BBF0028EFAC /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15663DE0227B4BBF0028EFAC /* GameViewController.swift */; };
 		15663DE4227B4BBF0028EFAC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15663DE2227B4BBF0028EFAC /* Main.storyboard */; };
@@ -30,10 +30,10 @@
 		153BEAB5228B6267007D5E63 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		153BEAB7228B6282007D5E63 /* LevelScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelScene.swift; sourceTree = "<group>"; };
 		153BEAB9228B6C60007D5E63 /* SpriteKitButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpriteKitButton.swift; sourceTree = "<group>"; };
+		1546F86122917789007CFA51 /* GameScene_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene_1.sks; sourceTree = "<group>"; };
 		155F66B222914A3C0072E431 /* GameScene_2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene_2.sks; sourceTree = "<group>"; };
 		15663DD5227B4BBF0028EFAC /* Birds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Birds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15663DD8227B4BBF0028EFAC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		15663DDA227B4BBF0028EFAC /* GameScene_1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene_1.sks; sourceTree = "<group>"; };
 		15663DDE227B4BBF0028EFAC /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		15663DE0227B4BBF0028EFAC /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		15663DE3227B4BBF0028EFAC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		155F66B1229024B10072E431 /* Levels */ = {
 			isa = PBXGroup;
 			children = (
-				15663DDA227B4BBF0028EFAC /* GameScene_1.sks */,
+				1546F86122917789007CFA51 /* GameScene_1.sks */,
 				155F66B222914A3C0072E431 /* GameScene_2.sks */,
 			);
 			path = Levels;
@@ -222,9 +222,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1546F86222917789007CFA51 /* GameScene_1.sks in Resources */,
 				15663DF1227B4ECC0028EFAC /* BirdTileSet.sks in Resources */,
 				15663DE4227B4BBF0028EFAC /* Main.storyboard in Resources */,
-				15663DDB227B4BBF0028EFAC /* GameScene_1.sks in Resources */,
 				155F66B322914A3C0072E431 /* GameScene_2.sks in Resources */,
 				15663DE6227B4BC10028EFAC /* Assets.xcassets in Resources */,
 				15663DE9227B4BC10028EFAC /* LaunchScreen.storyboard in Resources */,

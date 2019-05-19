@@ -110,7 +110,7 @@ class GameScene: SKScene {
                 block.size = child.size
                 block.position = child.position
                 block.zPosition = ZPositions.obstacles
-                block.createPhyscicsBody()
+                block.createPhysicsBody()
                 mapNode.addChild(block)
                 child.removeFromParent()
             }
@@ -129,8 +129,8 @@ class GameScene: SKScene {
     
     func addCamera() {
         guard let view = view else { return }
-        gameCamera.position = CGPoint(x: view.bounds.size.width/2, y: view.bounds.size.height/2)
         addChild(gameCamera)
+        gameCamera.position = CGPoint(x: view.bounds.size.width/2, y: view.bounds.size.height/2)
         camera = gameCamera
         gameCamera.setConstraints(scene: self, frame: mapNode.frame, node: nil)
     }
