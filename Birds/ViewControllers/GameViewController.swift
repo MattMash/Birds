@@ -50,6 +50,11 @@ extension GameViewController: SceneManagerDelegate {
     func present(scene: SKScene) {
         
         if let view = self.view as! SKView? {
+            if let gestureRecognizers = view.gestureRecognizers {
+                for gestureRecognizer in gestureRecognizers {
+                    view.removeGestureRecognizer(gestureRecognizer)
+                }
+            }
             scene.scene?.scaleMode = .resizeFill
             view.presentScene(scene)
             view.ignoresSiblingOrder = true

@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 enum RoundState {
-    case ready, flying, finished, animating
+    case ready, flying, finished, animating, gameOver
 }
 
 class GameScene: SKScene {
@@ -26,6 +26,14 @@ class GameScene: SKScene {
     
     var bird = Bird(type: .red)
     var birds = [Bird]()
+    var enemies = 0 {
+        didSet {
+            if enemies < 1 {
+                roundState = .gameOver
+                presentPopup(vitory: true)
+            }
+        }
+    }
     let anchor = SKNode()
     
     var level: Int?
@@ -72,6 +80,8 @@ class GameScene: SKScene {
                 })
         case .animating:
             break
+        case .gameOver:
+            break
         }
     }
     
@@ -110,16 +120,23 @@ class GameScene: SKScene {
         for child in mapNode.children {
             if let child = child as? SKSpriteNode {
                 guard let name = child.name else { continue }
-                if !["wood", "stone", "glass"].contains(name) { continue }
-                guard let type = BlockType(rawValue: name) else { continue }
-                let block = Block(type: type)
-                block.zRotation = child.zRotation
-                block.size = child.size
-                block.position = child.position
-                block.zPosition = ZPosition.obstacles
-                block.createPhysicsBody()
-                mapNode.addChild(block)
-                child.removeFromParent()
+                switch name {
+                case "wood", "stone", "glass" :
+                    if let block = createBlock(from: child, name: name) {
+                        mapNode.addChild(block)
+                        child.removeFromParent()
+                    }
+                case "orange":
+                    if let enemy = createEnemy(from: child, name: name) {
+                        mapNode.addChild(enemy)
+                        enemies += 1
+                        child.removeFromParent()
+                    }
+                    
+                default:
+                    break
+                }
+                
             }
         }
         
@@ -131,7 +148,28 @@ class GameScene: SKScene {
         
         anchor.position = CGPoint(x: mapNode.frame.midX/2, y: mapNode.frame.midY/2)
         addChild(anchor)
+        addSlingshot()
         addBird()
+    }
+    
+    func createBlock(from placeHolder:SKSpriteNode, name: String) -> Block? {
+        guard let type = BlockType(rawValue: name) else { return nil }
+        let block = Block(type: type)
+        block.zRotation = placeHolder.zRotation
+        block.size = placeHolder.size
+        block.position = placeHolder.position
+        block.zPosition = ZPosition.obstacles
+        block.createPhysicsBody()
+        return block
+    }
+    
+    func createEnemy(from placeHolder:SKSpriteNode, name: String) -> Enemy? {
+        guard let enemyType = EnemyType(rawValue: name) else { return nil }
+        let enemy = Enemy(type: enemyType)
+        enemy.size = placeHolder.size
+        enemy.position = placeHolder.position
+        enemy.createPhysicsBody()
+        return enemy
     }
     
     func addCamera() {
@@ -142,9 +180,20 @@ class GameScene: SKScene {
         gameCamera.setConstraints(scene: self, frame: mapNode.frame, node: nil)
     }
     
+    func addSlingshot() {
+        let slingshot = SKSpriteNode(imageNamed: "slingshot")
+        let scaleSize = CGSize(width: 0, height: mapNode.frame.midY/2 - mapNode.tileSize.height/2)
+        
+        slingshot.aspectScale(to: scaleSize, width: false, multiplier: 1.0)
+        slingshot.position = CGPoint(x: anchor.position.x, y: mapNode.tileSize.height + slingshot.size.height/2)
+        slingshot.zPosition = ZPosition.obstacles
+        mapNode.addChild(slingshot)
+    }
+    
     func addBird() {
         if birds.isEmpty {
-            print("No more birds")
+            presentPopup(vitory: false)
+            roundState = .gameOver
             return
         }
         bird = birds.removeFirst()
@@ -155,8 +204,9 @@ class GameScene: SKScene {
         bird.physicsBody?.collisionBitMask = PhycicsCategory.block | PhycicsCategory.edge
         bird.physicsBody?.isDynamic = false
         bird.position = anchor.position
+        bird.zPosition = ZPosition.bird
         addChild(bird)
-        bird.aspectScale(to: mapNode.tileSize, width: false, multiplier: 1.0)
+        bird.aspectScale(to: mapNode.tileSize, width: true, multiplier: 1.0)
         constraintToAnchor(active: true)
         roundState = .ready
     }
@@ -190,6 +240,20 @@ class GameScene: SKScene {
             roundState = .finished
         }
     }
+    
+    func presentPopup(vitory: Bool) {
+        if vitory {
+            let popup = Popup(type: 0, size: frame.size)
+            popup.zPosition = ZPosition.hudBackground
+            popup.popupButtonHandlerDelegate = self
+            gameCamera.addChild(popup)
+        } else {
+            let popup = Popup(type: 1, size: frame.size)
+            popup.zPosition = ZPosition.hudBackground
+            popup.popupButtonHandlerDelegate = self
+            gameCamera.addChild(popup)
+        }
+    }
 }
 
 extension GameScene: SKPhysicsContactDelegate{
@@ -217,6 +281,16 @@ extension GameScene: SKPhysicsContactDelegate{
             }
         case PhycicsCategory.bird | PhycicsCategory.edge:
             bird.flying = false
+        case PhycicsCategory.bird | PhycicsCategory.enemy:
+            if let enemy = contact.bodyA.node as? Enemy {
+                if enemy.imapct(with: Int(contact.collisionImpulse)) {
+                    enemies -= 1
+                }
+            } else if let enemy = contact.bodyB.node as? Enemy {
+                if enemy.imapct(with: Int(contact.collisionImpulse)) {
+                    enemies -= 1
+                }
+            }
         default:
             break
         }
@@ -253,4 +327,24 @@ extension GameScene {
             }
         }
     }
+}
+
+extension GameScene: PopupButtonHandlerDelegate {
+    func menuTapped() {
+        sceneManagerDelegate?.presentLevelScene()
+    }
+    
+    func nextTapped() {
+        if let level = level {
+        sceneManagerDelegate?.presentGameScene(level: level + 1)
+        }
+    }
+    
+    func retryTapped() {
+        if let level = level {
+            sceneManagerDelegate?.presentGameScene(level: level)
+        }
+    }
+    
+    
 }
